@@ -7,8 +7,8 @@ export default function Navbar() {
         <Image
           src="/Viajaconpaulogo.png"
           alt="Viaja con Pau"
-          width={90}
-          height={90}
+          width={130}
+          height={130}
           priority
         />
       </a>
@@ -20,7 +20,7 @@ export default function Navbar() {
       </div>
 
       <a
-        href="#planifica"
+        href="/planifica-tu-viaje"
         className="rounded-full bg-[var(--coral)] px-5 py-2 font-semibold text-white transition hover:opacity-90"
       >
         Planificá tu viaje
