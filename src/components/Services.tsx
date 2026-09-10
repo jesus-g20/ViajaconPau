@@ -77,8 +77,8 @@ export default function Services() {
         </div>
         <div className="mt-12 flex flex-col items-center text-center">
         <p className="font-semibold text-[var(--teal-dark)]">
-            No tenés que elegir un paquete. Contanos qué necesitás y diseñamos la
-            experiencia alrededor de vos.
+            No tenés que elegir un paquete. Cuentanos que necesitas y diseñamos la
+            experiencia alrededor de ti.
         </p>
 
         <a

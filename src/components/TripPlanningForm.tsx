@@ -40,6 +40,10 @@ export default function TripPlanningForm() {
   const [selectedStyles, setSelectedStyles] = useState<string[]>([]);
   const [selectedHelp, setSelectedHelp] = useState<string[]>([]);
   const [flexibleDates, setFlexibleDates] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<
+  "idle" | "success" | "error"
+  >("idle");
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -110,6 +114,9 @@ export default function TripPlanningForm() {
       return;
     }
 
+      setIsSubmitting(true);
+      setSubmitStatus("idle");
+
     try {
         const response = await fetch("/api/trip-request", {
         method: "POST",
@@ -130,12 +137,59 @@ export default function TripPlanningForm() {
         throw new Error(data.message || "Error al enviar la solicitud.");
         }
 
-        console.log("Respuesta del servidor:", data);
+
+        setSubmitStatus("success");
+
+        setFormData({
+        destination: "",
+        departureCity: "",
+        departureDate: "",
+        returnDate: "",
+        travelers: "",
+        budget: "",
+        name: "",
+        email: "",
+        whatsapp: "",
+        message: "",
+        });
+
+        setFlexibleDates(false);
+        setSelectedStyles([]);
+        setSelectedHelp([]);
+        setErrors({});
     } catch (error) {
         console.error("Error enviando formulario:", error);
+        setSubmitStatus("error");
+    } finally {
+        setIsSubmitting(false);
     }
     }
 
+    if (submitStatus === "success") {
+  return (
+    <div className="mx-auto mt-20 max-w-2xl text-center">
+      <p className="font-semibold uppercase tracking-[0.2em] text-[var(--teal)]">
+        ¡Listo!
+      </p>
+
+      <h2 className="mt-4 text-4xl font-bold text-[var(--teal-dark)]">
+        ¡Recibimos tu solicitud!
+      </h2>
+
+      <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed">
+        Gracias por contarnos sobre tu viaje. Pronto nos pondremos en contacto
+        con vos para comenzar a darle forma.
+      </p>
+
+      <a
+        href="/"
+        className="mt-8 inline-block rounded-full bg-[var(--coral)] px-7 py-3 font-semibold text-white transition hover:opacity-90"
+      >
+        Volver al inicio
+      </a>
+    </div>
+  );
+}
   return (
     <form
       onSubmit={handleSubmit}
@@ -442,22 +496,35 @@ export default function TripPlanningForm() {
               value={formData.message}
               onChange={handleChange}
               rows={5}
-              placeholder="Contanos cualquier detalle, idea o preferencia..."
+              placeholder="Cuentanos cualquier detalle, idea o preferencia..."
               className="w-full resize-none rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none transition focus:border-[var(--teal)]"
             />
           </div>
         </div>
       </section>
 
-      {/* SUBMIT */}
-      <div className="text-center">
+        {/* SUBMIT */}
+        <div className="text-center">
         <button
-          type="submit"
-          className="rounded-full bg-[var(--coral)] px-8 py-3 font-semibold text-white transition hover:opacity-90"
+            type="submit"
+            disabled={isSubmitting}
+            className="rounded-full bg-[var(--coral)] px-8 py-3 font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          Enviar mi viaje
+            {isSubmitting ? "Enviando..." : "Enviar mi viaje"}
         </button>
-      </div>
+
+        {submitStatus === "success" && (
+            <p className="mt-4 font-medium text-[var(--teal-dark)]">
+            ¡Recibimos tu solicitud! Pronto nos pondremos en contacto.
+            </p>
+        )}
+
+        {submitStatus === "error" && (
+            <p className="mt-4 font-medium text-[var(--coral)]">
+            No pudimos enviar tu solicitud. Intentá nuevamente en unos minutos.
+            </p>
+        )}
+        </div>
     </form>
   );
 }

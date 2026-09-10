@@ -18,11 +18,11 @@ export default function PlanificaTuViaje() {
           </p>
 
           <h1 className="mt-4 text-4xl font-bold text-[var(--teal-dark)] md:text-5xl">
-            Contanos sobre tu próximo viaje
+            Cuentanos sobre tu próximo viaje
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed">
-            No necesitás tener todo decidido. Contanos lo que tenés en mente y
+            No necesitas tener todo decidido. Cuentanos lo que tienes en mente y
             nosotros te ayudamos a darle forma.
           </p>
         </div>
